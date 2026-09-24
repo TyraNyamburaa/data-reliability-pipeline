@@ -1,0 +1,6 @@
+transaction_id,customer_id,agent_id,region,transaction_date,amount,currency,status,payment_method
+TX001,C100,A12,Nairobi,2026-07-01,1500,KES,SUCCESS,Mpesa
+TX005,C104,A16,Eldoret,2026-07-03,1200,KES,SUCCESS,Mpesa
+TX006,C105,A17,Naivasha,2026-07-01,1500,KES,SUCCESS,Mpesa
+TX007,C106,A18,Kericho,2026-07-01,1500,KES,SUCCESS,Mpesa
+TX0011,C107,A19,Murang'a,2026-07-03,1200,KES,SUCCESS,Mpesa

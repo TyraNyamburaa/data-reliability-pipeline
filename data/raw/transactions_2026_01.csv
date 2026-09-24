@@ -1,0 +1,14 @@
+transaction_id,customer_id,agent_id,region,transaction_date,amount,currency,status,payment_method
+
+TX001,C100,A12,Nairobi,2026-07-01,1500,KES,success,Mpesa
+TX001,C100,A12,Nairobi,2026-07-01,1500,KES,success,Mpesa
+TX002,C101,A13,Mombasa,2027-01-01,300,KES,SUCCESS,mobile_money
+TX003,C102,A14,Kisumu,2026-07-02,-500,KES,Pending,Mpesa
+TX004,C103,A15,Nakuru,,750,KES,failed,Mpesa
+TX005,C104,A16,Eldoret,2026-07-03,1200,KES,done,Mpesa
+TX006,C105,A17,Naivasha,2026-07-01,1500,KES,success,Mpesa
+TX007,C106,A18,Kericho,2026-07-01,1500,KES,success,Mpesa
+TX008,C107,A19,Murang'a,2027-01-01,300,KES,SUCCESS,mobile_money
+TX009,C107,A19,Murang'a,2026-07-02,-300,KES,Pending,Mpesa
+TX0010,C107,A19,Murang'a,,750,KES,failed,Mpesa
+TX0011,C107,A19,Murang'a,2026-07-03,1200,KES,done,Mpesa

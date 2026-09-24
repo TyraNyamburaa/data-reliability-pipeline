@@ -1,0 +1,11 @@
+{
+  "processed_records": 12,
+  "passed_records": 5,
+  "failed_records": 7,
+  "failure_breakdown": {
+    "INVALID_DATE": 2,
+    "INVALID_AMOUNT": 2,
+    "NULL_REQUIRED_FIELD": 2,
+    "DUPLICATE_TRANSACTION": 1
+  }
+}
