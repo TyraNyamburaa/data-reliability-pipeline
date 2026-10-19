@@ -123,9 +123,9 @@ Records that passed all validation checks.
 See [docs/engineering_decisions.md](docs/engineering_decisions.md) for full ADRs.
 
 Key decisions:
-- **Quarantine over deletion** — preserves audit trail (ADR-001)
+- **Quarantine over deletion** - preserves audit trail (ADR-001)
 - **Pandas** for data processing (ADR-002)
-- **Priority-based failure tagging** — each record gets one reason (ADR-003)
+- **Priority-based failure tagging** - each record gets one reason (ADR-003)
 - **JSON** for summary reports (ADR-004)
 
 ## 9. Future Improvements
