@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "data-reliability-pipeline"
 version = "0.1.0"
@@ -5,18 +9,49 @@ description = "A data reliability pipeline for transaction data"
 requires-python = ">=3.10"
 dependencies = [
     "pandas>=2.0",
-    "pytest>=7.0",
     "sqlalchemy>=2.0",
     "psycopg2-binary>=2.9",
     "PyYAML>=6.0",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.0", "pytest-cov>=4.0"]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.4.0",
+    "mypy>=1.10.0",
+    "black>=24.0.0",
+    "isort>=5.13.0",
+]
 airflow = ["apache-airflow>=2.7"]
 spark = ["pyspark>=3.5"]
-streaming = ["confluent-kafka>=2.0"]
+streaming = ["confluent-kafka>=2.0", "kafka-python>=2.0"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*", "scripts*", "dags*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+strict_optional = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+addopts = "-v --tb=short"

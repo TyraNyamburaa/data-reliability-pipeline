@@ -12,8 +12,8 @@ def load_csv(file_path: str) -> pd.DataFrame:
 
     try:
         df = pd.read_csv(file_path)
-    except pd.errors.EmptyDataError:
-        logging.warning(f"File {file_path} is empty. Skipping.")
+    except (pd.errors.EmptyDataError, FileNotFoundError, OSError) as e:
+        logging.warning(f"File {file_path} could not be loaded: {e}")
         return pd.DataFrame()
 
     logging.info(f"Loaded {len(df)} records from {file_path}")
