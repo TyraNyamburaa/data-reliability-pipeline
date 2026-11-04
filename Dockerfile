@@ -12,17 +12,16 @@ WORKDIR /app
 RUN groupadd --system pipeline && \
     useradd --system --gid pipeline --create-home pipeline
 
-COPY requirements.txt .
+COPY requirements/base.txt ./requirements/base.txt
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements/base.txt
 
 COPY src ./src
 COPY data/raw ./data/raw
-COPY data/processed ./data/processed
-COPY data/quarantine ./data/quarantine
-COPY tests ./tests
+COPY config ./config
 
-RUN chown -R pipeline:pipeline /app
+RUN mkdir -p /app/data/processed /app/data/quarantine /app/data/reports && \
+    chown -R pipeline:pipeline /app
 
 USER pipeline
 
