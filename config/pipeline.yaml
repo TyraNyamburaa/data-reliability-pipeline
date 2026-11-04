@@ -1,0 +1,33 @@
+env: ${PIPELINE_ENV:-local}
+log_level: ${LOG_LEVEL:-INFO}
+
+paths:
+  raw: ${INPUT_PATH:-/app/data/raw}
+  processed: ${PROCESSED_PATH:-/app/data/processed}
+  quarantine: ${QUARANTINE_PATH:-/app/data/quarantine}
+  reports: /app/data/reports
+
+postgres:
+  host: ${POSTGRES_HOST:-postgres}
+  port: ${POSTGRES_PORT:-5432}
+  database: ${POSTGRES_DB:-transaction_warehouse}
+  user: ${POSTGRES_USER:-pipeline_user}
+  password: ${POSTGRES_PASSWORD:-}
+
+validation:
+  required_columns:
+    - transaction_id
+    - customer_id
+    - agent_id
+    - transaction_date
+    - amount
+    - status
+  checks:
+    - name: null_required_fields
+      enabled: true
+    - name: duplicate_transaction_id
+      enabled: true
+    - name: invalid_amount
+      enabled: true
+    - name: future_date
+      enabled: true
