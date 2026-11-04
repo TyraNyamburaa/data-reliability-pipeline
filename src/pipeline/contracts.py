@@ -8,6 +8,12 @@ class FailureReason(str, Enum):
     INVALID_DATE = "INVALID_DATE"
 
 
+FAILURE_NULL = FailureReason.NULL_REQUIRED_FIELD.value
+FAILURE_DUPLICATE = FailureReason.DUPLICATE_TRANSACTION.value
+FAILURE_AMOUNT = FailureReason.INVALID_AMOUNT.value
+FAILURE_DATE = FailureReason.INVALID_DATE.value
+
+
 REQUIRED_COLUMNS = [
     "transaction_id",
     "customer_id",
