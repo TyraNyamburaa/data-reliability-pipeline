@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import os
 from pathlib import Path
+from typing import Optional
 
 import yaml
 
@@ -19,6 +20,21 @@ class Settings:
     quarantine_path: str
     reports_path: str
     config_path: str
+    warehouse_type: str = "postgres"
+    snowflake_account: Optional[str] = None
+    snowflake_user: Optional[str] = None
+    snowflake_password: Optional[str] = None
+    snowflake_database: Optional[str] = None
+    snowflake_warehouse: Optional[str] = None
+    snowflake_schema: Optional[str] = None
+    bigquery_project_id: Optional[str] = None
+    bigquery_dataset: Optional[str] = None
+    bigquery_credentials_path: Optional[str] = None
+    redshift_host: Optional[str] = None
+    redshift_port: Optional[int] = None
+    redshift_database: Optional[str] = None
+    redshift_user: Optional[str] = None
+    redshift_password: Optional[str] = None
 
     @property
     def database_url(self) -> str:
@@ -52,6 +68,9 @@ def load_settings(config_path: str = "config/pipeline.yaml") -> Settings:
 
     paths = config.get("paths", {})
     postgres = config.get("postgres", {})
+    snowflake = config.get("snowflake", {})
+    bigquery = config.get("bigquery", {})
+    redshift = config.get("redshift", {})
 
     return Settings(
         pipeline_env=config.get("env", os.getenv("PIPELINE_ENV", "local")),
@@ -66,4 +85,19 @@ def load_settings(config_path: str = "config/pipeline.yaml") -> Settings:
         quarantine_path=paths.get("quarantine", os.getenv("QUARANTINE_PATH", "/app/data/quarantine")),
         reports_path=paths.get("reports", "/app/data/reports"),
         config_path=str(path),
+        warehouse_type=config.get("warehouse_type", os.getenv("WAREHOUSE_TYPE", "postgres")),
+        snowflake_account=snowflake.get("account") or os.getenv("SNOWFLAKE_ACCOUNT"),
+        snowflake_user=snowflake.get("user") or os.getenv("SNOWFLAKE_USER"),
+        snowflake_password=snowflake.get("password") or os.getenv("SNOWFLAKE_PASSWORD"),
+        snowflake_database=snowflake.get("database") or os.getenv("SNOWFLAKE_DATABASE"),
+        snowflake_warehouse=snowflake.get("warehouse") or os.getenv("SNOWFLAKE_WAREHOUSE"),
+        snowflake_schema=snowflake.get("schema") or os.getenv("SNOWFLAKE_SCHEMA"),
+        bigquery_project_id=bigquery.get("project_id") or os.getenv("BIGQUERY_PROJECT_ID"),
+        bigquery_dataset=bigquery.get("dataset") or os.getenv("BIGQUERY_DATASET"),
+        bigquery_credentials_path=bigquery.get("credentials_path") or os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+        redshift_host=redshift.get("host") or os.getenv("REDSHIFT_HOST"),
+        redshift_port=int(redshift.get("port", 5439)) if redshift.get("port") else None,
+        redshift_database=redshift.get("database") or os.getenv("REDSHIFT_DATABASE"),
+        redshift_user=redshift.get("user") or os.getenv("REDSHIFT_USER"),
+        redshift_password=redshift.get("password") or os.getenv("REDSHIFT_PASSWORD"),
     )
