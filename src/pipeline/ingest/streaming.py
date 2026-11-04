@@ -11,9 +11,7 @@ def create_consumer(
     try:
         from confluent_kafka import Consumer
     except ImportError:
-        logging.error(
-            "confluent-kafka is not installed. Install with: pip install confluent-kafka"
-        )
+        logging.error("confluent-kafka is not installed. Install with: pip install confluent-kafka")
         return None
 
     conf = {
