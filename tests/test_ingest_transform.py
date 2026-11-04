@@ -1,8 +1,7 @@
-import pytest
 import pandas as pd
 
 from src.pipeline.ingest.batch import load_csv
-from src.pipeline.transform.transactions import transform_data, STATUS_MAPPING
+from src.pipeline.transform.transactions import STATUS_MAPPING, transform_data
 
 
 def test_status_mapping_values():
@@ -13,14 +12,16 @@ def test_status_mapping_values():
 
 
 def test_transform_cleans_columns(tmp_path):
-    df = pd.DataFrame({
-        "Transaction_ID": ["TX001"],
-        "Customer_ID": ["C1"],
-        "Agent_ID": ["A1"],
-        "Transaction_Date": ["2026-01-01"],
-        "Amount": [100],
-        "Status": ["SUCCESS"],
-    })
+    df = pd.DataFrame(
+        {
+            "Transaction_ID": ["TX001"],
+            "Customer_ID": ["C1"],
+            "Agent_ID": ["A1"],
+            "Transaction_Date": ["2026-01-01"],
+            "Amount": [100],
+            "Status": ["SUCCESS"],
+        }
+    )
     result = transform_data(df)
     assert "transaction_id" in result.columns
     assert "amount" in result.columns

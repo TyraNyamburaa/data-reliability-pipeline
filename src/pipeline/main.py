@@ -2,11 +2,11 @@ import logging
 
 from src.pipeline.config import load_settings
 from src.pipeline.ingest.batch import load_all_csvs
+from src.pipeline.logging import logger
+from src.pipeline.reporting.quality_report import generate_quality_report
 from src.pipeline.transform.transactions import transform_data
 from src.pipeline.validate.transactions import run_all_checks
 from src.pipeline.warehouse.postgres import save_clean_data, save_quarantine_data, save_to_postgres
-from src.pipeline.reporting.quality_report import generate_quality_report
-from src.pipeline.logging import logger
 
 REPORT_PATH = "data/reports/summary_report.json"
 

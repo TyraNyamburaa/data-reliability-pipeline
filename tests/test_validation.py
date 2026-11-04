@@ -1,24 +1,28 @@
 import pandas as pd
-import pytest
+
 from src.validation import (
     run_all_checks,
-    validate_duplicates,
     validate_amounts,
-    validate_nulls,
-    validate_dates,
     validate_columns,
+    validate_dates,
+    validate_duplicates,
+    validate_nulls,
 )
 
 
 def test_duplicate_detection():
-    df = pd.DataFrame({
-        "transaction_id": ["TX001", "TX001", "TX002", "TX003"],
-        "customer_id": ["C1", "C1", "C2", "C3"],
-        "agent_id": ["A1", "A1", "A2", "A3"],
-        "transaction_date": pd.to_datetime(["2026-01-01", "2026-01-01", "2026-01-01", "2026-01-01"]),
-        "amount": [100, 100, 200, 300],
-        "status": ["SUCCESS", "SUCCESS", "PENDING", "FAILED"],
-    })
+    df = pd.DataFrame(
+        {
+            "transaction_id": ["TX001", "TX001", "TX002", "TX003"],
+            "customer_id": ["C1", "C1", "C2", "C3"],
+            "agent_id": ["A1", "A1", "A2", "A3"],
+            "transaction_date": pd.to_datetime(
+                ["2026-01-01", "2026-01-01", "2026-01-01", "2026-01-01"]
+            ),
+            "amount": [100, 100, 200, 300],
+            "status": ["SUCCESS", "SUCCESS", "PENDING", "FAILED"],
+        }
+    )
 
     duplicates = validate_duplicates(df)
 
@@ -27,14 +31,16 @@ def test_duplicate_detection():
 
 
 def test_invalid_amount():
-    df = pd.DataFrame({
-        "transaction_id": ["TX001", "TX002", "TX003"],
-        "customer_id": ["C1", "C2", "C3"],
-        "agent_id": ["A1", "A2", "A3"],
-        "transaction_date": pd.to_datetime(["2026-01-01", "2026-01-01", "2026-01-01"]),
-        "amount": [100, -50, 0],
-        "status": ["SUCCESS", "PENDING", "FAILED"],
-    })
+    df = pd.DataFrame(
+        {
+            "transaction_id": ["TX001", "TX002", "TX003"],
+            "customer_id": ["C1", "C2", "C3"],
+            "agent_id": ["A1", "A2", "A3"],
+            "transaction_date": pd.to_datetime(["2026-01-01", "2026-01-01", "2026-01-01"]),
+            "amount": [100, -50, 0],
+            "status": ["SUCCESS", "PENDING", "FAILED"],
+        }
+    )
 
     invalid = validate_amounts(df)
 
@@ -44,14 +50,16 @@ def test_invalid_amount():
 
 
 def test_null_detection():
-    df = pd.DataFrame({
-        "transaction_id": ["TX001", "TX002"],
-        "customer_id": ["C1", None],
-        "agent_id": ["A1", "A2"],
-        "transaction_date": pd.to_datetime(["2026-01-01", None]),
-        "amount": [100, 200],
-        "status": ["SUCCESS", "PENDING"],
-    })
+    df = pd.DataFrame(
+        {
+            "transaction_id": ["TX001", "TX002"],
+            "customer_id": ["C1", None],
+            "agent_id": ["A1", "A2"],
+            "transaction_date": pd.to_datetime(["2026-01-01", None]),
+            "amount": [100, 200],
+            "status": ["SUCCESS", "PENDING"],
+        }
+    )
 
     nulls = validate_nulls(df)
 
@@ -61,14 +69,16 @@ def test_null_detection():
 
 def test_invalid_date():
     future_date = pd.Timestamp.today() + pd.Timedelta(days=30)
-    df = pd.DataFrame({
-        "transaction_id": ["TX001", "TX002"],
-        "customer_id": ["C1", "C2"],
-        "agent_id": ["A1", "A2"],
-        "transaction_date": pd.to_datetime(["2026-01-01", future_date]),
-        "amount": [100, 200],
-        "status": ["SUCCESS", "PENDING"],
-    })
+    df = pd.DataFrame(
+        {
+            "transaction_id": ["TX001", "TX002"],
+            "customer_id": ["C1", "C2"],
+            "agent_id": ["A1", "A2"],
+            "transaction_date": pd.to_datetime(["2026-01-01", future_date]),
+            "amount": [100, 200],
+            "status": ["SUCCESS", "PENDING"],
+        }
+    )
 
     invalid = validate_dates(df)
 
@@ -77,14 +87,18 @@ def test_invalid_date():
 
 
 def test_run_all_checks_quarantine():
-    df = pd.DataFrame({
-        "transaction_id": ["TX001", "TX001", "TX002", "TX003"],
-        "customer_id": ["C1", "C1", "C2", "C3"],
-        "agent_id": ["A1", "A1", "A2", "A3"],
-        "transaction_date": pd.to_datetime(["2026-01-01", "2026-01-01", "2026-01-01", "2026-01-01"]),
-        "amount": [100, 100, -50, 200],
-        "status": ["SUCCESS", "SUCCESS", "PENDING", "FAILED"],
-    })
+    df = pd.DataFrame(
+        {
+            "transaction_id": ["TX001", "TX001", "TX002", "TX003"],
+            "customer_id": ["C1", "C1", "C2", "C3"],
+            "agent_id": ["A1", "A1", "A2", "A3"],
+            "transaction_date": pd.to_datetime(
+                ["2026-01-01", "2026-01-01", "2026-01-01", "2026-01-01"]
+            ),
+            "amount": [100, 100, -50, 200],
+            "status": ["SUCCESS", "SUCCESS", "PENDING", "FAILED"],
+        }
+    )
 
     valid_df, invalid_df = run_all_checks(df)
 

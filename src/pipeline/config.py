@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 import os
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
@@ -82,7 +82,9 @@ def load_settings(config_path: str = "config/pipeline.yaml") -> Settings:
         postgres_password=postgres.get("password", os.getenv("POSTGRES_PASSWORD", "")),
         input_path=paths.get("raw", os.getenv("INPUT_PATH", "/app/data/raw")),
         processed_path=paths.get("processed", os.getenv("PROCESSED_PATH", "/app/data/processed")),
-        quarantine_path=paths.get("quarantine", os.getenv("QUARANTINE_PATH", "/app/data/quarantine")),
+        quarantine_path=paths.get(
+            "quarantine", os.getenv("QUARANTINE_PATH", "/app/data/quarantine")
+        ),
         reports_path=paths.get("reports", "/app/data/reports"),
         config_path=str(path),
         warehouse_type=config.get("warehouse_type", os.getenv("WAREHOUSE_TYPE", "postgres")),
@@ -94,7 +96,8 @@ def load_settings(config_path: str = "config/pipeline.yaml") -> Settings:
         snowflake_schema=snowflake.get("schema") or os.getenv("SNOWFLAKE_SCHEMA"),
         bigquery_project_id=bigquery.get("project_id") or os.getenv("BIGQUERY_PROJECT_ID"),
         bigquery_dataset=bigquery.get("dataset") or os.getenv("BIGQUERY_DATASET"),
-        bigquery_credentials_path=bigquery.get("credentials_path") or os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+        bigquery_credentials_path=bigquery.get("credentials_path")
+        or os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
         redshift_host=redshift.get("host") or os.getenv("REDSHIFT_HOST"),
         redshift_port=int(redshift.get("port", 5439)) if redshift.get("port") else None,
         redshift_database=redshift.get("database") or os.getenv("REDSHIFT_DATABASE"),

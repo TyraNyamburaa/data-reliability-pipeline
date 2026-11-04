@@ -1,7 +1,5 @@
-import json
 import logging
 from pathlib import Path
-from typing import Dict
 
 import pandas as pd
 from sqlalchemy import create_engine, text
@@ -55,7 +53,7 @@ def save_to_postgres(
 
 def load_quarantine_from_postgres(settings) -> pd.DataFrame:
     engine = create_engine(settings.database_url)
-    query = text('SELECT * FROM reliability.quarantine ORDER BY created_at DESC')
+    query = text("SELECT * FROM reliability.quarantine ORDER BY created_at DESC")
     with engine.connect() as conn:
         df = pd.read_sql(query, conn)
     engine.dispose()

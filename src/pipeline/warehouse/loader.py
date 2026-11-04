@@ -1,5 +1,4 @@
 import logging
-from typing import Optional
 
 from src.pipeline.config import Settings
 
@@ -23,6 +22,7 @@ class CloudWarehouseClient:
 
     def _load_postgres(self, df, table_name: str):
         from src.pipeline.warehouse.postgres import save_to_postgres
+
         save_to_postgres(df, self.settings, table_name)
         return True
 

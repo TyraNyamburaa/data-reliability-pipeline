@@ -1,9 +1,8 @@
 import json
-from pathlib import Path
 
 import pandas as pd
 
-from src.report import generate_report, save_report, build_failure_breakdown
+from src.report import build_failure_breakdown, generate_report, save_report
 
 
 def test_generate_report():
@@ -38,10 +37,12 @@ def test_save_report(tmp_path):
 
 
 def test_build_failure_breakdown():
-    invalid_df = pd.DataFrame({
-        "transaction_id": ["TX001", "TX002", "TX003"],
-        "failure_reason": ["DUPLICATE_TRANSACTION", "INVALID_AMOUNT", "DUPLICATE_TRANSACTION"],
-    })
+    invalid_df = pd.DataFrame(
+        {
+            "transaction_id": ["TX001", "TX002", "TX003"],
+            "failure_reason": ["DUPLICATE_TRANSACTION", "INVALID_AMOUNT", "DUPLICATE_TRANSACTION"],
+        }
+    )
 
     breakdown = build_failure_breakdown(invalid_df)
 

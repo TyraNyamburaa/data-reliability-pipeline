@@ -10,7 +10,7 @@ def run_spark_batch_job(
 ):
     try:
         from pyspark.sql import SparkSession
-        from pyspark.sql.functions import col, lower, trim, to_date, to_timestamp
+        from pyspark.sql.functions import col, lower, to_date, trim
     except ImportError:
         logging.error("PySpark is not installed. Install with: pip install pyspark")
         return None
@@ -22,8 +22,7 @@ def run_spark_batch_job(
         file_path = f"{settings.input_path}/transactions_2026_01.csv"
 
     spark = (
-        SparkSession.builder
-        .appName("TransactionReliabilityBatch")
+        SparkSession.builder.appName("TransactionReliabilityBatch")
         .master("local[*]")
         .config("spark.sql.session.timeZone", "UTC")
         .getOrCreate()
@@ -39,10 +38,8 @@ def run_spark_batch_job(
     )
 
     valid_df = transformed.filter(
-        col("transaction_id").isNotNull()
-        & col("customer_id").isNotNull()
-        & col("amount_numeric") > 0
-        & col("transaction_date_parsed").isNotNull()
+        col("transaction_id").isNotNull() & col("customer_id").isNotNull() & col("amount_numeric")
+        > 0 & col("transaction_date_parsed").isNotNull()
     )
 
     total_count = df.count()

@@ -1,19 +1,19 @@
-import logging
 import json
-from typing import Optional
-
-from confluent_kafka import Consumer, KafkaException
+import logging
+from typing import Any, Optional
 
 
 def create_consumer(
     bootstrap_servers: str,
     group_id: str,
     topic: str,
-) -> Optional[Consumer]:
+) -> Optional[Any]:
     try:
-        import confluent_kafka
+        from confluent_kafka import Consumer
     except ImportError:
-        logging.error("confluent-kafka is not installed. Install with: pip install confluent-kafka")
+        logging.error(
+            "confluent-kafka is not installed. Install with: pip install confluent-kafka"
+        )
         return None
 
     conf = {
@@ -34,6 +34,8 @@ def consume_transactions(
     topic: str,
     max_messages: int = 100,
 ) -> list:
+    from confluent_kafka import KafkaException
+
     consumer = create_consumer(bootstrap_servers, group_id, topic)
     if consumer is None:
         return []

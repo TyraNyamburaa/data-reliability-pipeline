@@ -11,8 +11,8 @@ def run_spark_streaming_job(
 ):
     try:
         from pyspark.sql import SparkSession
-        from pyspark.sql.functions import from_json, col, when
-        from pyspark.sql.types import StructType, StructField, StringType, DoubleType
+        from pyspark.sql.functions import col, from_json, when
+        from pyspark.sql.types import DoubleType, StringType, StructField, StructType
     except ImportError:
         logging.error("PySpark is not installed. Install with: pip install pyspark")
         return None
@@ -21,28 +21,28 @@ def run_spark_streaming_job(
         settings = load_settings()
 
     spark = (
-        SparkSession.builder
-        .appName("TransactionReliabilityStreaming")
+        SparkSession.builder.appName("TransactionReliabilityStreaming")
         .config("spark.sql.session.timeZone", "UTC")
         .getOrCreate()
     )
 
-    schema = StructType([
-        StructField("transaction_id", StringType(), True),
-        StructField("customer_id", StringType(), True),
-        StructField("agent_id", StringType(), True),
-        StructField("region", StringType(), True),
-        StructField("transaction_date", StringType(), True),
-        StructField("amount", DoubleType(), True),
-        StructField("currency", StringType(), True),
-        StructField("status", StringType(), True),
-        StructField("payment_method", StringType(), True),
-        StructField("event_time", StringType(), True),
-    ])
+    schema = StructType(
+        [
+            StructField("transaction_id", StringType(), True),
+            StructField("customer_id", StringType(), True),
+            StructField("agent_id", StringType(), True),
+            StructField("region", StringType(), True),
+            StructField("transaction_date", StringType(), True),
+            StructField("amount", DoubleType(), True),
+            StructField("currency", StringType(), True),
+            StructField("status", StringType(), True),
+            StructField("payment_method", StringType(), True),
+            StructField("event_time", StringType(), True),
+        ]
+    )
 
     streaming_df = (
-        spark.readStream
-        .format("kafka")
+        spark.readStream.format("kafka")
         .option("kafka.bootstrap.servers", bootstrap_servers)
         .option("subscribe", topic)
         .option("startingOffsets", "earliest")
@@ -61,12 +61,7 @@ def run_spark_streaming_job(
         ).otherwise("INVALID"),
     )
 
-    query = (
-        validated_df.writeStream
-        .outputMode("append")
-        .format("console")
-        .start()
-    )
+    query = validated_df.writeStream.outputMode("append").format("console").start()
 
     logging.info(f"Streaming job started: consuming from {bootstrap_servers}/{topic}")
     return query
